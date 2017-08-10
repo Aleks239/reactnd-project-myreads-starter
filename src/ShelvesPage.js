@@ -48,13 +48,14 @@ class ShelvesPage extends Component {
                                 return (
 
                                     <Shelve key={type} shelve={type}>
-                                    {this.state.current.map((book) => {
+
+                                    {this.state.current.length !== 0 ? this.state.current.map((book) => {
                                         return (
 
                                             <Book key={book.id} author={book.authors[0]} title={book.title}
                                                   cover={book.imageLinks.thumbnail}/>
                                         )
-                                    })}
+                                    }): <p>Loading...</p>}
                                     </Shelve>
 
                                 )
@@ -62,25 +63,37 @@ class ShelvesPage extends Component {
                             }
 
                             else if(type === aShelveTypes[1]){
-                                return (<Shelve key={type} shelve={type}>
-                                    {this.state.wanted.map((book) => {
-                                        return (
-                                            <Book key={book.id} author={book.authors[0]} title={book.title}
-                                                  cover={book.imageLinks.thumbnail}/>
-                                        )
-                                    })}
-                                </Shelve>)
+                                return (
+
+                                    <Shelve key={type} shelve={type}>
+
+                                        {this.state.wanted.length !== 0 ? this.state.current.map((book) => {
+                                            return (
+
+                                                <Book key={book.id} author={book.authors[0]} title={book.title}
+                                                      cover={book.imageLinks.thumbnail}/>
+                                            )
+                                        }): <p>Loading...</p>}
+                                    </Shelve>
+
+                                )
                             }
 
                             else if(type === aShelveTypes[2]){
-                                return (<Shelve key={type} shelve={type}>
-                                    {this.state.read.map((book) => {
-                                        return (
-                                            <Book key={book.id} author={book.authors[0]} title={book.title}
-                                                  cover={book.imageLinks.thumbnail}/>
-                                        )
-                                    })}
-                                </Shelve>)
+                                return (
+
+                                    <Shelve key={type} shelve={type}>
+
+                                        {this.state.read.length !== 0 ? this.state.current.map((book) => {
+                                            return (
+
+                                                <Book key={book.id} author={book.authors[0]} title={book.title}
+                                                      cover={book.imageLinks.thumbnail}/>
+                                            )
+                                        }): <p>Loading...</p>}
+                                    </Shelve>
+
+                                )
                             }
 
                         })}
