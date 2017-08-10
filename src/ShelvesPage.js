@@ -35,7 +35,6 @@ class ShelvesPage extends Component {
     render() {
 
         const aShelveTypes = ["Currently Reading", "Want to read", "Read"]
-        console.log(this.aCurrentlyRead)
         return (
             <div className="list-books">
                 <div className="list-books-title">
@@ -67,7 +66,7 @@ class ShelvesPage extends Component {
 
                                     <Shelve key={type} shelve={type}>
 
-                                        {this.state.wanted.length !== 0 ? this.state.current.map((book) => {
+                                        {this.state.wanted.length !== 0 ? this.state.wanted.map((book) => {
                                             return (
 
                                                 <Book key={book.id} author={book.authors[0]} title={book.title}
@@ -84,9 +83,8 @@ class ShelvesPage extends Component {
 
                                     <Shelve key={type} shelve={type}>
 
-                                        {this.state.read.length !== 0 ? this.state.current.map((book) => {
+                                        {this.state.read.length !== 0 ? this.state.read.map((book) => {
                                             return (
-
                                                 <Book key={book.id} author={book.authors[0]} title={book.title}
                                                       cover={book.imageLinks.thumbnail}/>
                                             )
