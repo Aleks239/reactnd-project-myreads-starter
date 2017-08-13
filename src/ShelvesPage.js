@@ -61,29 +61,31 @@ class ShelvesPage extends Component {
     changeShelf = (book, selectedShelf, previousShelf) => {
         let removedOperation = this.removeFromShelf(previousShelf, book)
         let {current, wanted, read} = removedOperation
-        BooksAPI.update(book, selectedShelf).then((res) => {
-            switch (selectedShelf) {
-                case bookManager.sCurentlyReading:
-                    book.shelf = selectedShelf
-                    current.push(book)
-                    this.setState({current: current, wanted: wanted, read: read})
-                    break
-                case bookManager.sWantToRead:
-                    book.shelf = selectedShelf
-                    wanted.push(book)
-                    this.setState({current: current, wanted: wanted, read: read})
-                    break
-                case bookManager.sRead:
-                    book.shelf = selectedShelf
-                    read.push(book)
-                    this.setState({current: current, wanted: wanted, read: read})
-                    break
-                default:
-                    break
-            }
-        })
-
+        switch (selectedShelf) {
+            case bookManager.sCurentlyReading:
+                BooksAPI.update(book, selectedShelf)
+                book.shelf = selectedShelf
+                current.push(book)
+                this.setState({current: current, wanted: wanted, read: read})
+                break
+            case bookManager.sWantToRead:
+                BooksAPI.update(book, selectedShelf)
+                book.shelf = selectedShelf
+                wanted.push(book)
+                this.setState({current: current, wanted: wanted, read: read})
+                break
+            case bookManager.sRead:
+                BooksAPI.update(book, selectedShelf)
+                book.shelf = selectedShelf
+                read.push(book)
+                this.setState({current: current, wanted: wanted, read: read})
+                break
+            default:
+                break
+        }
     }
+
+
 
 
     render() {
