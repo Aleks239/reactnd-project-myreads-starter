@@ -1,6 +1,6 @@
-const sCurentlyReading = "currentlyReading"
-const sWantToRead = "wantToRead"
-const sRead = "read"
+export const sCurentlyReading = "currentlyReading"
+export const sWantToRead = "wantToRead"
+export const sRead = "read"
 
 export const getCurrentlyReading = (books) => {
 
@@ -22,3 +22,4 @@ export const getRead = (books) => {
         return book.shelf === sRead
     })
 }
+
