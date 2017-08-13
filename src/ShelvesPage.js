@@ -25,8 +25,62 @@ class ShelvesPage extends Component {
             let cr = bookManager.getCurrentlyReading(books)
             let wr = bookManager.getWantToRead(books)
             let re = bookManager.getRead(books)
-            this.setState({current: cr,wanted:wr,read:re})
+            this.setState({current: cr, wanted: wr, read: re})
+            console.log(books)
 
+        })
+
+    }
+
+    removeFromShelf = (type, removed) => {
+        let {current, wanted, read} = this.state
+
+        switch (type) {
+            case bookManager.sCurentlyReading:
+                current = this.state.current.filter((book) => {
+                    return book.id !== removed.id
+                })
+                return {current, wanted, read}
+            case bookManager.sWantToRead:
+                wanted = this.state.wanted.filter((book) => {
+                    return book.id !== removed.id
+                })
+                return {current, wanted, read}
+            case bookManager.sRead:
+                read = this.state.read.filter((book) => {
+                    return book.id !== removed.id
+                })
+                return {current, wanted, read}
+            default:
+                return {current, wanted, read}
+
+        }
+    }
+
+
+    changeShelf = (book, selectedShelf, previousShelf) => {
+        let removedOperation = this.removeFromShelf(previousShelf, book)
+        let {current, wanted, read} = removedOperation
+        BooksAPI.update(book, selectedShelf).then((res) => {
+            switch (selectedShelf) {
+                case bookManager.sCurentlyReading:
+                    book.shelf = selectedShelf
+                    current.push(book)
+                    this.setState({current: current, wanted: wanted, read: read})
+                    break
+                case bookManager.sWantToRead:
+                    book.shelf = selectedShelf
+                    wanted.push(book)
+                    this.setState({current: current, wanted: wanted, read: read})
+                    break
+                case bookManager.sRead:
+                    book.shelf = selectedShelf
+                    read.push(book)
+                    this.setState({current: current, wanted: wanted, read: read})
+                    break
+                default:
+                    break
+            }
         })
 
     }
@@ -48,20 +102,21 @@ class ShelvesPage extends Component {
 
                                     <Shelve key={type} shelve={type}>
 
-                                    {this.state.current.length !== 0 ? this.state.current.map((book) => {
-                                        return (
+                                        {this.state.current.length !== 0 ? this.state.current.map((book) => {
+                                            return (
 
-                                            <Book key={book.id} author={book.authors[0]} title={book.title}
-                                                  cover={book.imageLinks.thumbnail}/>
-                                        )
-                                    }): <p>Loading...</p>}
+                                                <Book type={book.shelf} makeChange={this.changeShelf} bookRef={book}
+                                                      key={book.id} author={book.authors[0]} title={book.title}
+                                                      cover={book.imageLinks.thumbnail}/>
+                                            )
+                                        }) : <p>Loading...</p>}
                                     </Shelve>
 
                                 )
 
                             }
 
-                            else if(type === aShelveTypes[1]){
+                            else if (type === aShelveTypes[1]) {
                                 return (
 
                                     <Shelve key={type} shelve={type}>
@@ -69,26 +124,28 @@ class ShelvesPage extends Component {
                                         {this.state.wanted.length !== 0 ? this.state.wanted.map((book) => {
                                             return (
 
-                                                <Book key={book.id} author={book.authors[0]} title={book.title}
+                                                <Book type={book.shelf} makeChange={this.changeShelf} bookRef={book}
+                                                      key={book.id} author={book.authors[0]} title={book.title}
                                                       cover={book.imageLinks.thumbnail}/>
                                             )
-                                        }): <p>Loading...</p>}
+                                        }) : <p>Loading...</p>}
                                     </Shelve>
 
                                 )
                             }
 
-                            else if(type === aShelveTypes[2]){
+                            else if (type === aShelveTypes[2]) {
                                 return (
 
                                     <Shelve key={type} shelve={type}>
 
                                         {this.state.read.length !== 0 ? this.state.read.map((book) => {
                                             return (
-                                                <Book key={book.id} author={book.authors[0]} title={book.title}
+                                                <Book type={book.shelf} makeChange={this.changeShelf} bookRef={book}
+                                                      key={book.id} author={book.authors[0]} title={book.title}
                                                       cover={book.imageLinks.thumbnail}/>
                                             )
-                                        }): <p>Loading...</p>}
+                                        }) : <p>Loading...</p>}
                                     </Shelve>
 
                                 )

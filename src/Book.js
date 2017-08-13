@@ -4,6 +4,9 @@ class Book extends Component {
 
     constructor(props) {
         super(props)
+        this.state = {
+            shelf: this.props.type
+        }
     }
 
     render() {
@@ -17,10 +20,13 @@ class Book extends Component {
                             backgroundImage: `url(${this.props.cover})`
                         }}></div>
                         <div className="book-shelf-changer">
-                            <select onChange={(e) => {
-                                console.log(e.target.value)
+                            <select defaultValue="None" onChange={(e) => {
+                                let previousShelf = this.state.shelf
+                                let selectedShelf = e.target.value
+                                let book = this.props.bookRef
+                                this.props.makeChange(book, selectedShelf, previousShelf)
                             }}>
-                                <option value="none" disabled>Move to...</option>
+                                <option value="None" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
                                 <option value="wantToRead">Want to Read</option>
                                 <option value="read">Read</option>
