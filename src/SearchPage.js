@@ -20,6 +20,27 @@ class SearchPage extends Component {
     }
 
 
+
+    addToShelf = (book,shelf) => {
+        BooksAPI.get(book.id).then((book) =>{
+            if(book.shelf === "none"){
+                BooksAPI.update(book,shelf).then((res)=>{
+                    alert("Added!")
+                    console.log(res)
+                })
+            }else{
+                alert("Already added to shelf: " + book.shelf)
+            }
+
+
+
+        })
+
+
+
+    }
+
+
     enter = (e) => {
         let query = e.target.value
 
@@ -73,7 +94,7 @@ class SearchPage extends Component {
 
                     {this.state.loading ? <h1>Loading...</h1> :
                         <ol className="books-grid">{this.state.books.map((book) => {
-                            return <Book type={book.shelf} makeChange={this.changeShelf} bookRef={book}
+                            return <Book type={book.shelf} makeChange={this.addToShelf} bookRef={book}
                                          key={book.id} author="Shit" title={book.title}
                                          cover={book.imageLinks.thumbnail}/>
                         })}</ol>}

@@ -21,10 +21,19 @@ class Book extends Component {
                         }}></div>
                         <div className="book-shelf-changer">
                             <select defaultValue="None" onChange={(e) => {
-                                let previousShelf = this.state.shelf
-                                let selectedShelf = e.target.value
-                                let book = this.props.bookRef
-                                this.props.makeChange(book, selectedShelf, previousShelf)
+                                if (this.state.shelf !== undefined){
+                                    let previousShelf = this.state.shelf
+                                    let selectedShelf = e.target.value
+                                    let book = this.props.bookRef
+                                    this.props.makeChange(book, selectedShelf, previousShelf)
+                                }
+                                else{
+                                    let selectedShelf = e.target.value
+                                    let book = this.props.bookRef
+                                    this.props.makeChange(book,selectedShelf)
+
+                                }
+
                             }}>
                                 <option value="None" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
