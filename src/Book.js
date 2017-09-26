@@ -20,22 +20,7 @@ class Book extends Component {
                             backgroundImage: `url(${this.props.cover})`
                         }}></div>
                         <div className="book-shelf-changer">
-                            <select defaultValue="None" onChange={(e) => {
-                                if (this.state.shelf !== undefined){
-                                    let previousShelf = this.state.shelf
-                                    let selectedShelf = e.target.value
-                                    let book = this.props.bookRef
-                                    this.props.makeChange(book, selectedShelf, previousShelf)
-                                }
-                                else{
-                                    let selectedShelf = e.target.value
-                                    let book = this.props.bookRef
-                                    this.props.makeChange(book,selectedShelf)
-
-                                }
-
-                            }}>
-                                <option value="None" disabled>Move to...</option>
+                            <select defaultValue={this.state.shelf} onChange={(e) => {console.log(e)}}>
                                 <option value="currentlyReading">Currently Reading</option>
                                 <option value="wantToRead">Want to Read</option>
                                 <option value="read">Read</option>
