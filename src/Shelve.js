@@ -18,10 +18,14 @@ class Shelve extends Component{
                     <ol className="books-grid">
                         {this.props.books.map((book)=>{
                             let image = book.imageLinks.smallThumbnail
+                            let author = book.authors[0]
                             if(image === 'undefined'){
                                 image = "https://cdn.pixabay.com/photo/2015/04/23/17/41/javascript-736400_640.png"
                             }
-                            return <Book key={book.title} cover={image} type={book.shelf} title={book.title} author={book.author}/>
+                            if(author === "undefined"){
+                                author = "Mr. Unknown"
+                            }
+                            return <Book updateShelves={this.props.updateShelves} key={book.id} bookRef={book} cover={image} type={book.shelf} title={book.title} author={author}/>
                         })}
                     </ol>
                 </div>

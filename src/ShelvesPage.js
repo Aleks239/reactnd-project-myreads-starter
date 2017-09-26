@@ -26,11 +26,12 @@ class ShelvesPage extends Component {
 
     }
 
-    removeFromShelf = (type, removed) => {
-
-
+    updateShelves = () => {
+        BooksAPI.getAll().then((books)=>{
+            this.setState({books:books})
+            console.log(books)
+        })
     }
-
 
     changeShelf = (book, selectedShelf, previousShelf) => {
 
@@ -50,9 +51,9 @@ class ShelvesPage extends Component {
                 </div>
                 <div className="list-books-content">
                     <div>
-                        <Shelve shelf="Currently reading" books={currentlyReading}/>
-                        <Shelve shelf="Want to read" books={wantToRead}/>
-                        <Shelve shelf="Read" books={read}/>
+                        <Shelve updateShelves={this.updateShelves} shelf="Currently reading"  books={currentlyReading}/>
+                        <Shelve updateShelves={this.updateShelves} shelf="Want to read"  books={wantToRead}/>
+                        <Shelve updateShelves={this.updateShelves} shelf="Read"  books={read}/>
                     </div>
                 </div>
                 <div className="open-search">
