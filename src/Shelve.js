@@ -1,11 +1,21 @@
 import React, {Component} from 'react'
 import Book from "./Book"
+import * as BooksAPI from './BooksAPI'
 
 
 class Shelve extends Component{
 
     constructor(props){
         super(props)
+
+
+    }
+
+    changeShelf = (book,shelf) => {
+        BooksAPI.update(book,shelf).then((res)=>{
+            console.log(res)
+            this.props.updateShelves()
+        })
 
 
     }
@@ -25,7 +35,7 @@ class Shelve extends Component{
                             if(author === "undefined"){
                                 author = "Mr. Unknown"
                             }
-                            return <Book updateShelves={this.props.updateShelves} key={book.id} bookRef={book} cover={image} type={book.shelf} title={book.title} author={author}/>
+                            return <Book update={this.changeShelf} key={book.id} bookRef={book} cover={image} type={book.shelf} title={book.title} author={author}/>
                         })}
                     </ol>
                 </div>

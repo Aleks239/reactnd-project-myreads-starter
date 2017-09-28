@@ -10,33 +10,52 @@ class SearchPage extends Component {
         this.state = {
             query: "",
             books: [],
-            loading: false
+            loading: false,
+            adding:false,
+            addedBooks: []
+
 
         }
+
     }
+
+    changeShelf = (book,shelf) => {
+        BooksAPI.update(book,shelf).then((res)=>{
+            alert(`${book.title} added to ${shelf} shelf!`)
+
+        })
+
+
+    }
+
+    componentDidMount() {
+        BooksAPI.getAll().then((books) => {
+            this.setState({addedBooks: books})
+            console.log(books)
+        })
+    }
+
 
     handleChange = (e) => {
         this.setState({query: e.target.value})
     }
 
 
-
-    addToShelf = (book,shelf) => {
-        BooksAPI.get(book.id).then((book) =>{
-            if(book.shelf === "none"){
-                BooksAPI.update(book,shelf).then((res)=>{
-                    alert("Added!")
-                    console.log(res)
-                })
-            }else{
-                alert("Already added to shelf: " + book.shelf)
-            }
-
-
-
+    getUniqueBooks = (existingBookIds) => {
+        return this.state.books.filter((book) => {
+            return !existingBookIds.includes(book.id)
         })
+    }
 
+    getAddedBooksForSearch = (existingBookIds) => {
 
+        let booksOnShelf = this.state.books.filter((book) => {
+            return existingBookIds.includes(book.id)
+        }).map((book) => { return book.id})
+
+        return this.state.addedBooks.filter((book) => {
+            return booksOnShelf.includes(book.id)
+        })
 
     }
 
@@ -46,14 +65,22 @@ class SearchPage extends Component {
 
         if (e.key === "Enter" && query !== "") {
             this.setState({loading: true})
-            console.log(query.trim())
             BooksAPI.search(query, 10).then((data) => {
                 if (Array.isArray(data)) {
                     console.log(data)
                     this.setState({
                         books: data,
-                        loading: false
+
                     })
+
+                    let ids = this.state.addedBooks.map((book) => {
+                        return book.id
+                    })
+                    let uniqueBooks = this.getUniqueBooks(ids)
+                    let booksFromShelf = this.getAddedBooksForSearch(ids)
+                    let books = [...booksFromShelf, ...uniqueBooks]
+                    this.setState({books:books, loading:false})
+
 
                 }
                 else {
@@ -69,6 +96,8 @@ class SearchPage extends Component {
 
 
     render() {
+
+
         return (
             <div onKeyPress={this.enter} className="search-books">
                 <div className="search-books-bar">
@@ -92,11 +121,17 @@ class SearchPage extends Component {
                 </div>
                 <div className="search-books-results">
 
-                    {this.state.loading ? <h1>Loading...</h1> :
+                    {this.state.loading  && this.state.addedBooks.length !== 0 ? <h1>Loading...</h1> :
+
                         <ol className="books-grid">{this.state.books.map((book) => {
-                            return <Book type={book.shelf} makeChange={this.addToShelf} bookRef={book}
-                                         key={book.id} author="Shit" title={book.title}
-                                         cover={book.imageLinks.thumbnail}/>
+
+
+                            return <Book update={this.changeShelf} type={book.shelf} bookRef={book}
+                                         key={book.id} author={book.authors ? book.authors[0] : "Unknown"}
+                                         title={book.title}
+                                         cover={book.imageLinks ? book.imageLinks.thumbnail : ""}/>
+
+
                         })}</ol>}
 
 

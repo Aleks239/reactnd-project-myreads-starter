@@ -3,7 +3,6 @@ import * as BooksAPI from './BooksAPI'
 import {Link} from "react-router-dom"
 import Shelve from "./Shelve"
 
-import * as bookManager from "./utils/bookManager"
 
 class ShelvesPage extends Component {
 
@@ -33,9 +32,6 @@ class ShelvesPage extends Component {
         })
     }
 
-    changeShelf = (book, selectedShelf, previousShelf) => {
-
-    }
 
 
     render() {
@@ -50,11 +46,12 @@ class ShelvesPage extends Component {
                     <h1>MyReads</h1>
                 </div>
                 <div className="list-books-content">
-                    <div>
+                    {this.state.books.length !== 0 ?  <div>
                         <Shelve updateShelves={this.updateShelves} shelf="Currently reading"  books={currentlyReading}/>
                         <Shelve updateShelves={this.updateShelves} shelf="Want to read"  books={wantToRead}/>
                         <Shelve updateShelves={this.updateShelves} shelf="Read"  books={read}/>
-                    </div>
+                    </div> : <h1>Loading ...</h1>}
+
                 </div>
                 <div className="open-search">
                     <Link to="/search">Add a book</Link>

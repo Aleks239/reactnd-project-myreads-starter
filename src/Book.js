@@ -1,24 +1,8 @@
-import React, {Component} from 'react'
-import * as BooksAPI from './BooksAPI'
-
-class Book extends Component {
-
-    constructor(props) {
-        super(props)
-        this.state = {
-            shelf: this.props.type
-        }
-    }
-
-    changeShelf = (book,shelf) => {
-        BooksAPI.update(book,shelf).then((res)=>{
-                this.props.updateShelves()
-            })
+import React from 'react'
 
 
-    }
+function Book(props) {
 
-    render() {
         return (
             <li>
                 <div className="book">
@@ -26,11 +10,11 @@ class Book extends Component {
                         <div className="book-cover" style={{
                             width: 128,
                             height: 193,
-                            backgroundImage: `url(${this.props.cover})`
+                            backgroundImage: `url(${props.cover})`
                         }}></div>
                         <div className="book-shelf-changer">
-                            <select defaultValue={this.state.shelf} onChange={(e) => {
-                                this.changeShelf(this.props.bookRef, e.target.value)}
+                            <select defaultValue={props.type ? props.type : "none"} onChange={(e) => {
+                                props.update(props.bookRef, e.target.value)}
                             }>
                                 <option value="currentlyReading">Currently Reading</option>
                                 <option value="wantToRead">Want to Read</option>
@@ -39,13 +23,13 @@ class Book extends Component {
                             </select>
                         </div>
                     </div>
-                    <div className="book-title">{this.props.title}</div>
-                    <div className="book-authors">{this.props.author}</div>
+                    <div className="book-title">{props.title}</div>
+                    <div className="book-authors">{props.author}</div>
                 </div>
             </li>
         )
 
-    }
+
 }
 
 export default Book
