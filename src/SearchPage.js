@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import * as BooksAPI from './BooksAPI'
 import {Link} from "react-router-dom"
 import Book from "./Book"
+import Loader from 'halogen/SyncLoader'
 
 class SearchPage extends Component {
 
@@ -121,7 +122,7 @@ class SearchPage extends Component {
                 </div>
                 <div className="search-books-results">
 
-                    {this.state.loading  && this.state.addedBooks.length !== 0 ? <h1>Loading...</h1> :
+                    {this.state.loading  && this.state.addedBooks.length !== 0 ? <Loader color="#26A65B" size="16px" margin="5px"/> :
 
                         <ol className="books-grid">{this.state.books.map((book) => {
 

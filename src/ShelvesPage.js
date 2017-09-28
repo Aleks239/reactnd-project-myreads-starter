@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import * as BooksAPI from './BooksAPI'
 import {Link} from "react-router-dom"
 import Shelve from "./Shelve"
-
+import Loader from 'halogen/PulseLoader'
 
 class ShelvesPage extends Component {
 
@@ -50,7 +50,7 @@ class ShelvesPage extends Component {
                         <Shelve updateShelves={this.updateShelves} shelf="Currently reading"  books={currentlyReading}/>
                         <Shelve updateShelves={this.updateShelves} shelf="Want to read"  books={wantToRead}/>
                         <Shelve updateShelves={this.updateShelves} shelf="Read"  books={read}/>
-                    </div> : <h1>Loading ...</h1>}
+                    </div> : <Loader color="#26A65B" size="16px" margin="6px"/>}
 
                 </div>
                 <div className="open-search">
